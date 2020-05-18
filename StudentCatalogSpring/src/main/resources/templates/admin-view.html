@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Student Catalog (Student View)</title>
+
+<!-- Import scripts -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<!-- Metadata -->
+<meta charset="UTF-8">
+<meta name="description" content="Admin console for the Student Catalog.">
+<meta name="keywords"
+	content="HTML,CSS,JavaScript, Spring, Thymeleaf, AngularJS">
+<meta name="author" content="Kelvin Beltre">
+
+<!-- Import scripts -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Merriweather Sans'
+	rel='stylesheet'>
+
+<!-- CSS -->
+<style>
+body {
+	background-color: #f9ffbf;
+	text-align: center;
+	font-family: 'Merriweather Sans', 'Gill Sans', 'Gill Sans MT', 'Calibri',
+		'Trebuchet MS', sans-serif, sans-serif;
+}
+
+input {
+	height: 30px;
+	width: 250px;
+	border-radius: 10px;
+	font-family: 'Merriweather Sans', 'Gill Sans', 'Gill Sans MT', 'Calibri',
+		'Trebuchet MS', sans-serif, sans-serif;
+}
+
+button {
+	border-radius: 10px;
+	width: 45%;
+	font-family: 'Merriweather Sans', 'Gill Sans', 'Gill Sans MT', 'Calibri',
+		'Trebuchet MS', sans-serif, sans-serif;
+}
+
+#table-container {
+	display: inline-block;
+	border: solid;
+	border-radius: 10px;
+	background-color: #f9f2ff;
+	margin-bottom: 5vh;
+	width: 80%;
+	height: 40vh;
+	max-height: 80%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+#message {
+	margin-top: 10vh;
+	margin-left: 20vh;
+	text-align: left;
+}
+
+#logout-link {
+	margin-left: 1vh;
+}
+
+.light-table-row {
+	display: flex;
+	background-color: #f9f2ff;
+	justify-content: space-around;
+}
+
+.dark-table-row {
+	background-color: #cec1d9;
+	display: flex;
+	justify-content: space-around;
+}
+
+.table-element {
+	display: inline-block;
+	font-size: x-large;
+}
+
+.flex-row {
+	border: solid;
+	border-radius: 10px;
+	display: inline-flex;
+	justify-content: space-evenly;
+	width: 80%;
+}
+
+.flex-col {
+	align-items: center;
+	height: 20vh;
+	width: 25%;
+	margin-right: 3vh;
+	display: inline-flex;
+	justify-content: space-evenly;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.flex-footer {
+	align-items: baseline;
+	display: inline-flex;
+	justify-content: center;
+	width: 80%;
+}
+
+.ssn {
+	flex: 0.5;
+}
+</style>
+</head>
+
+<body>
+	<h1>Student Catalog (Admin View)</h1>
+	<div ng-app="tableApp" ng-controller="tableCtrl">
+			<div class="flex-col">
+				<p>The database is currently <b>up</b>.</p>
+				<button>Toggle Database (on/off)</button>
+			</div>
+
+		<div id="logout-panel" class="flex-footer">
+			<p th:text="'Logged in as ' + ${name}"></p>
+			<a id="logout-link" href="/logout">(Logout)</a>
+		</div>
+
+	</div>
+
+	<script th:inline="javascript">
+		//Parse returned list from Thymeleaf to AngularJS
+		/*<![CDATA[*/
+
+		var studentList = /*[[${studentList}]]*/'default';
+
+		/*]]>*/
+	</script>
+
+	<script>
+		//tableCtrl definition and functions
+		var app = angular.module('tableApp', []);
+		app
+				.controller(
+						'tableCtrl',
+						function($scope) {
+							//Extract JSON Object entries to studentArray
+							var studentArray = new Array();
+							for (i in studentList) {
+								studentArray.push([ studentList[i].firstname,
+										studentList[i].lastname,
+										studentList[i].ssn ]);
+								$scope.students = studentArray.sort();
+								$scope.message = "Search for students and they will appear in this box:";
+							}
+						});
+	</script>
+</body>
+
+</html>
